@@ -1,6 +1,6 @@
 import os
 
-# Django settings for bikeopath project.
+# Django settings for proje project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = (
 #    'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'bikeopath.urls'
+ROOT_URLCONF = 'proje.urls'
 
 ROOT_PATH = os.path.dirname(__file__)
 TEMPLATE_DIRS = (

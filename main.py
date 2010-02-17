@@ -17,7 +17,7 @@ def bootstrap_django():
     assert django.VERSION[0] >= 1, "This Django version is too old"
 
     # Custom Django configuration.
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'bikeopath.settings'
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'proje.settings'
     from django.conf import settings
     settings._target = None
     

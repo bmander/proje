@@ -9,7 +9,7 @@ urlpatterns = patterns(
     'proje.views',
     url(r'^$', 'welcome', name='welcome'),
     # Example:
-    # (r'^bikeopath/', include('bikeopath.foo.urls')),
+    # (r'^proje/', include('proje.foo.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
