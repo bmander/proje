@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from google.appengine.api import users
 import logging
 from django.utils import simplejson as json
+from google.appengine.ext.db import GeoPt
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
