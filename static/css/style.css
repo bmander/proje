@@ -1,0 +1,68 @@
+#menubar a.selected, #menubar u.selected {
+	background-color:#FFFFFF;
+}
+
+#menubar {
+	-moz-box-sizing:border-box;
+	background-color:#B0C4DE;
+	height:32px;
+	position:relative;
+}
+
+#menubar u {
+	color:#333333;
+	display:block;
+	float:left;
+	font-size:14px;
+	font-weight:bold;
+	height:29px;
+	line-height:29px;
+	margin-left:1%;
+	margin-top:3px;
+	text-align:center;
+	text-decoration:none;
+	width:23%;
+}
+
+a, u {
+	color:#3B5998;
+	cursor:pointer;
+	display:inline;
+	text-decoration:inherit;
+}
+
+body {
+	color:#333333;
+	font-family:Helvetica;
+	margin:0px;
+}
+
+#content {
+	background-color:#FFFFFF;
+	height:100%;
+}
+
+#footer {
+	background-color:#FFFFFF;
+}
+
+.pane {
+	position:absolute;
+	top:0px;
+	width:100%;
+	height:100%;
+}
+
+.inputtab {
+	float:right;
+	background-color:#FFAAAA;
+	margin-left:5px;
+	padding:3px;
+	cursor:pointer;
+}
+
+input {
+	width:100%;
+	height:35px;
+	font-size:25px;
+}
