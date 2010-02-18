@@ -1,14 +1,59 @@
 <html>
   <head>
-    <title></title>
+    <title>do.proje.cx - Do Projects!</title>
+    <style type="text/css">
+      #userstatus 
+        {
+           padding:2px;
+           margin-bottom:5px;
+           overflow:hidden;
+           background-color:#ffeeee;
+           border-bottom-style:solid;
+           border-bottom-width:1px;
+           border-bottom-color:#ffbbbb;
+           border-right-style:solid;
+           border-right-width:1px;
+           border-right-color:#ffbbbb;
+        }
+      #signedin {float:left}
+      #logout {float:right}
+      #content 
+        {
+          background-color:#ffffff;
+          width:950px;
+          display:block;
+          margin:auto;
+          padding:5px;
+          min-height:950px;
+        }
+      a {text-decoration:none;}
+      a:hover {text-decoration:underline}
+      body {background-color:#eeeeee}
+      h1{margin:0px;padding:5px;}
+      
+    </style>
   </head>
   <body>
-    <div id="userstatus">
-      <div id="username">
-        signed in as <span>{{user}}</span>
+    <div id="content">
+
+      <h1>
+        do.proje.cx
+      </h1>
+      
+      <div id="userstatus">
+        <div id="signedin">
+          signed in as <a id="username" href="{{user.nickname}}/">{{user}}</span>
+        </div>
+        <div id="logout">
+          <a href="{{signout_url}}">sign out</a>
+        </div>
       </div>
-      <div id="logout">
-        <a href="{{signout_url}}">sign out</a>
+      
+      <div>
+        connected sites
+      </div>
+      <div>
+        your projects
       </div>
     </div>
   </body>
