@@ -25,3 +25,10 @@ def welcome(request):
         enter_url=users.create_login_url("/")
     
     return render_to_response( "welcome.html", {'enter_url':enter_url} )
+    
+@membersonly
+def home(request):
+    user = users.get_current_user()
+    signout_url = users.create_logout_url("/welcome")
+    
+    return render_to_response( "home.html", {'user':user,'signout_url':signout_url} )

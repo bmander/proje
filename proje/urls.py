@@ -7,7 +7,8 @@ from django.conf.urls.defaults import url
 
 urlpatterns = patterns(
     'proje.views',
-    url(r'^$', 'welcome', name='welcome'),
+    url(r'^welcome$', 'welcome', name='welcome'),
+    url(r'^$', 'home', name='home'),
     # Example:
     # (r'^proje/', include('proje.foo.urls')),
 
