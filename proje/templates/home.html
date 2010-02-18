@@ -5,7 +5,7 @@
       #userstatus 
         {
            padding:2px;
-           margin-bottom:5px;
+           margin-bottom:10px;
            overflow:hidden;
            background-color:#ffeeee;
            border-bottom-style:solid;
@@ -31,6 +31,33 @@
       body {background-color:#eeeeee}
       h1{margin:0px;padding:5px;}
       
+      #addprojectslink{
+        background-color:#eeffee;
+        text-size:large;
+        padding: 2px;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-bottom-color:#ddffdd;
+        border-right-style:solid;
+        border-right-width:1px;
+        border-right-color:#ddffdd;
+      }
+      
+      #addproject{
+        margin-bottom:10px;
+      }
+      
+      #explanation{
+        padding: 2px;
+        margin-bottom:10px;
+      }
+      
+      .extrainfo {
+        padding-left:3px;
+        padding-right:3px;
+        background-color:#f6f6f6;
+      }
+      
     </style>
   </head>
   <body>
@@ -39,18 +66,20 @@
       <h1>
         do.proje.cx
       </h1>
-      
+      <div id="explanation">
+        do.proje.cx is a place for listing, tracking, and sharing your projects <a class="extrainfo" href="read_more">read more</a>
+      </div>
       <div id="userstatus">
         <div id="signedin">
-          signed in as <a id="username" href="{{user.nickname}}/">{{user}}</span>
+          signed in as <a id="username" href="{{user.nickname}}/">{{user}}</a>
         </div>
         <div id="logout">
           <a href="{{signout_url}}">sign out</a>
         </div>
       </div>
       
-      <div>
-        connected sites
+      <div id="addproject">
+        <a id="addprojectslink" href="add_project/">add project</a>
       </div>
       <div>
         your projects
