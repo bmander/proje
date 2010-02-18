@@ -2,6 +2,7 @@
   <head>
     <title>do.proje.cx - Do Projects!</title>
     <style type="text/css">
+    
       #userstatus 
         {
            padding:2px;
@@ -58,6 +59,11 @@
         background-color:#f6f6f6;
       }
       
+      ul {
+        list-style-type:none;
+        padding-left:10px;
+      }
+      
     </style>
   </head>
   <body>
@@ -67,7 +73,7 @@
         do.proje.cx
       </h1>
       <div id="explanation">
-        do.proje.cx is a place for listing, tracking, and sharing your projects <a class="extrainfo" href="read_more">read more</a>
+        do.proje.cx is a place for listing, tracking, and sharing your projects <a class="extrainfo" href="read_more">learn more</a>
       </div>
       <div id="userstatus">
         <div id="signedin">
@@ -82,7 +88,11 @@
         <a id="addprojectslink" href="add_project/">add project</a>
       </div>
       <div>
-        your projects
+        <ul>
+          {% for project in projects %}
+          <li><a href="/proje/{{project.key.id}}/">{{ project.name }}</a></li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </body>

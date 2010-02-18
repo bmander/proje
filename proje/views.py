@@ -4,13 +4,14 @@ from google.appengine.api import users
 import logging
 from django.utils import simplejson as json
 from google.appengine.ext.db import GeoPt
+from models import Project
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
         
         user = users.get_current_user()
         if user:
-            return f(request, *args, **kwargs)
+            return f(request, user, *args, **kwargs)
         else:
             return HttpResponseRedirect( "/welcome" )
     
@@ -27,8 +28,28 @@ def welcome(request):
     return render_to_response( "welcome.html", {'enter_url':enter_url} )
     
 @membersonly
-def home(request):
-    user = users.get_current_user()
+def home(request, user):
     signout_url = users.create_logout_url("/welcome")
     
-    return render_to_response( "home.html", {'user':user,'signout_url':signout_url} )
+    projects = Project.all().filter('user =', user)
+    
+    return render_to_response( "home.html", {'user':user,'signout_url':signout_url,'projects':projects} )
+    
+@membersonly
+def add_project(request, user):
+    
+    if request.method=="POST":
+        # process form
+        
+        # fail if the name is blank
+        name = request.POST['name'].strip()
+        if name == "":
+            return HttpResponseRedirect( "?error=the+name+needs+to+contain+letters" )
+        project = Project(user=user,name=name)
+        project.put()
+        
+        # return redirect to main page
+        return HttpResponseRedirect( "/" )
+    
+    return render_to_response( "add_project.html", {'error':request.GET.get('error',None)} )
+    

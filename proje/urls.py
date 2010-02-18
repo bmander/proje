@@ -9,6 +9,7 @@ urlpatterns = patterns(
     'proje.views',
     url(r'^welcome$', 'welcome', name='welcome'),
     url(r'^$', 'home', name='home'),
+    url(r'^add_project/$', 'add_project', name='add_project'),
     # Example:
     # (r'^proje/', include('proje.foo.urls')),
 
