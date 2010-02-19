@@ -4,7 +4,7 @@ from google.appengine.api import users
 import logging
 from django.utils import simplejson as json
 from google.appengine.ext.db import GeoPt
-from models import Project
+from models import Project, Nickname
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
@@ -29,6 +29,10 @@ def welcome(request):
     
 @membersonly
 def home(request, user):
+    # if we haven't already created a Nickname for this google account's current nickname, create one
+    if Nickname.all().filter("nickname =", user.nickname()).count() == 0:
+        Nickname(user=user, nickname=user.nickname()).put()
+    
     signout_url = users.create_logout_url("/welcome")
     
     projects = Project.all().filter('user =', user)
@@ -52,4 +56,26 @@ def add_project(request, user):
         return HttpResponseRedirect( "/" )
     
     return render_to_response( "add_project.html", {'error':request.GET.get('error',None)} )
+    
+@membersonly
+def delete_project( request, user, id ):
+    return HttpResponseRedirect( "/" )
+
+def project(request, id):
+    project = Project.get_by_id(int(id))
+    
+    return render_to_response( "project.html", {'project':project} )
+    
+def user(request, nickname):
+    # get a user from the nickname
+    nickname = Nickname.all().filter("nickname =", nickname).get()
+    
+    if nickname is None:
+        return HttpResponseNotFound( "No such user" )
+        
+    projects = Project.all().filter("user =", nickname.user)
+    
+    # get projects from the user
+    return render_to_response( "user.html", {'user':nickname.user,'projects':projects} )
+    
     

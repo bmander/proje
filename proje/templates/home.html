@@ -5,8 +5,8 @@
     
       #userstatus 
         {
+           margin-bottom:5px;
            padding:2px;
-           margin-bottom:10px;
            overflow:hidden;
            background-color:#ffeeee;
            border-bottom-style:solid;
@@ -16,6 +16,20 @@
            border-right-width:1px;
            border-right-color:#ffbbbb;
         }
+        
+      #header {
+           margin-bottom:5px;
+           padding:2px;
+           overflow:hidden;
+           background-color:#eeeeff;
+           border-bottom-style:solid;
+           border-bottom-width:1px;
+           border-bottom-color:#bbbbff;
+           border-right-style:solid;
+           border-right-width:1px;
+           border-right-color:#bbbbff;
+      }
+        
       #signedin {float:left}
       #logout {float:right}
       #content 
@@ -50,7 +64,6 @@
       
       #explanation{
         padding: 2px;
-        margin-bottom:10px;
       }
       
       .extrainfo {
@@ -68,29 +81,32 @@
   </head>
   <body>
     <div id="content">
-
-      <h1>
-        do.proje.cx
-      </h1>
-      <div id="explanation">
-        do.proje.cx is a place for listing, tracking, and sharing your projects <a class="extrainfo" href="read_more">learn more</a>
-      </div>
       <div id="userstatus">
         <div id="signedin">
-          signed in as <a id="username" href="{{user.nickname}}/">{{user}}</a>
+          signed in as <a id="username" href="user/{{user.nickname}}/">{{user}}</a>
         </div>
         <div id="logout">
           <a href="{{signout_url}}">sign out</a>
         </div>
       </div>
       
+      <div id="header">
+        <h1>
+          do.proje.cx
+        </h1>
+        <div id="explanation">
+          do.proje.cx is a place for listing, tracking, and sharing your projects <a class="extrainfo" href="read_more">learn more</a>
+        </div>
+      </div>
+
       <div id="addproject">
         <a id="addprojectslink" href="add_project/">add project</a>
       </div>
+
       <div>
         <ul>
           {% for project in projects %}
-          <li><a href="/proje/{{project.key.id}}/">{{ project.name }}</a></li>
+          <li><a href="/project/{{project.key.id}}/">{{ project.name }}</a></li>
           {% endfor %}
         </ul>
       </div>

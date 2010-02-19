@@ -10,6 +10,9 @@ urlpatterns = patterns(
     url(r'^welcome$', 'welcome', name='welcome'),
     url(r'^$', 'home', name='home'),
     url(r'^add_project/$', 'add_project', name='add_project'),
+    url(r'^project/delete/(.*)/', 'delete_project', name='delete_project'),
+    url(r'^project/(.*)/', 'project', name='project'),
+    url(r'^user/(.*)/', 'user', name='user'),
     # Example:
     # (r'^proje/', include('proje.foo.urls')),
 

@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>{{user.nickname}} at do.proje.cx</title>
+  </head>
+  <body>
+    <h1>{{user.nickname}}</h1>
+    <ul>
+      {% for project in projects %}
+        <li><a href="/project/{{project.key.id}}/">{{ project.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
