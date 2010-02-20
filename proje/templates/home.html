@@ -5,7 +5,7 @@
     
     <script type="text/javascript">
     
-      function hide_url_submit(urlsubmit_form_element) {
+      function hide_url_submit_form(urlsubmit_form_element) {
         $(urlsubmit_form_element).children().filter(".urlinput")[0].value="";
         $(urlsubmit_form_element).parent().css("height","0px").css("visibility", "hidden");
         $(urlsubmit_form_element).parent().siblings().filter(".posturl").css("visibility","visible").css("height","auto");
@@ -38,14 +38,14 @@
           console.log( url );
           console.log( projectid );
           
-          hide_url_submit( this );
+          hide_url_submit_form( this );
           
           return false;
         });
         
         // onclick the cancel button, hide the posturl form
         $(".urlinputcancel").click(function event(){
-          hide_url_submit( $(this).parent() );
+          hide_url_submit_form( $(this).parent() );
         });
         
       });
