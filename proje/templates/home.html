@@ -6,34 +6,34 @@
     <script type="text/javascript">
     
       function hide_url_submit_form(urlsubmit_form_element) {
-        $(urlsubmit_form_element).children().filter(".urlinput")[0].value="";
+        $(urlsubmit_form_element).children().filter(".scrap_input")[0].value="";
         $(urlsubmit_form_element).parent().css("height","0px").css("visibility", "hidden");
-        $(urlsubmit_form_element).parent().siblings().filter(".posturl").css("visibility","visible").css("height","auto");
+        $(urlsubmit_form_element).parent().siblings().filter(".post_scrap_explanation").css("visibility","visible").css("height","auto");
       }
     
       $(document).ready(function(){
             
-        // onmouseover make the posturl div light up
-        $(".posturlexplanation").mouseover(function(event){
+        // onmouseover make the post_scrap_explanation div light up
+        $(".post_scrap_explanation_span").mouseover(function(event){
           $(this).css("background-color","#ddd");
         }).mouseout(function(event){
           $(this).css("background-color","#fff");
         });
             
         // onclick show the posturl form
-        $(".posturl").click(function(event){
+        $(".post_scrap_explanation").click(function(event){
           $(this).css("height","0px").css("visibility", "hidden");
           
-          var posturlformdiv = $(this).siblings().filter(".posturlformdiv");
-          posturlformdiv.css("visibility","visible").css("height","auto");
+          var post_scrap_form_div = $(this).siblings().filter(".post_scrap_form_div");
+          post_scrap_form_div.css("visibility","visible").css("height","auto");
           
-          posturlformdiv.children().filter("form").children().filter(".urlinput").focus();
+          post_scrap_form_div.children().filter("form").children().filter(".scrap_input").focus();
         });
         
         // onsubmit hide the posturl form
-        $(".posturlform").submit(function (event){
-          var url       = $(this).children().filter(".urlinput")[0].value;
-          var projectid = $(this).children().filter(".projectidinput")[0].value;
+        $(".post_scrap_form").submit(function (event){
+          var url       = $(this).children().filter(".scrap_input")[0].value;
+          var projectid = $(this).children().filter(".project_id_input")[0].value;
         
           console.log( url );
           console.log( projectid );
@@ -44,7 +44,7 @@
         });
         
         // onclick the cancel button, hide the posturl form
-        $(".urlinputcancel").click(function event(){
+        $(".scrap_input_cancel").click(function event(){
           hide_url_submit_form( $(this).parent() );
         });
         
@@ -128,14 +128,14 @@
         padding-left:10px;
       }
       
-      .posturlexplanation {
+      .post_scrap_explanation_span {
         font-size: 12px;
         font-style: italic;
         padding:2px;
         color:#888;
       }
       
-      .posturlformdiv {
+      .post_scrap_form_div {
         height:0px;
         visibility:hidden;
       }
@@ -173,20 +173,22 @@
       <div>
         {% for project in projects %}
         <div>
-          <div class="projectline">
+          <div class="project_summary">
             <a href="/project/{{project.key.id}}/">{{ project.name }}</a>
           </div>
-          <div class="projectposturl">
-            <div class="posturl">
-              <span class="posturlexplanation">post a url, a feed url, or a status message</span>
-            </div>
-            <div class="posturlformdiv">
-              <form class="posturlform">
-                <input class="urlinput" size="50" type="text" name="url"/>
-                <input class="projectidinput" type="hidden" name="projectid" value="{{project.key.id}}"/>
-                <input type="submit" value="submit">
-                <input class="urlinputcancel" type="button" value="cancel">
-              </form>
+          <div class="project_scraps">
+            <div class="post_scrap">
+              <div class="post_scrap_explanation">
+                <span class="post_scrap_explanation_span">post a url, a feed url, or a status message</span>
+              </div>
+              <div class="post_scrap_form_div">
+                <form class="post_scrap_form">
+                  <input class="scrap_input" size="50" type="text" name="scrap"/>
+                  <input class="project_id_input" type="hidden" name="projectid" value="{{project.key.id}}"/>
+                  <input type="submit" value="submit">
+                  <input class="scrap_input_cancel" type="button" value="cancel">
+                </form>
+              </div>
             </div>
           </div>
         </div>
