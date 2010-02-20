@@ -5,8 +5,22 @@
     
     <script type="text/javascript">
     
+      function hide_url_submit(urlsubmit_form_element) {
+        $(urlsubmit_form_element).children().filter(".urlinput")[0].value="";
+        $(urlsubmit_form_element).parent().css("height","0px").css("visibility", "hidden");
+        $(urlsubmit_form_element).parent().siblings().filter(".posturl").css("visibility","visible").css("height","auto");
+      }
+    
       $(document).ready(function(){
             
+        // onmouseover make the posturl div light up
+        $(".posturlexplanation").mouseover(function(event){
+          $(this).css("background-color","#ddd");
+        }).mouseout(function(event){
+          $(this).css("background-color","#fff");
+        });
+            
+        // onclick show the posturl form
         $(".posturl").click(function(event){
           $(this).css("height","0px").css("visibility", "hidden");
           
@@ -16,24 +30,22 @@
           posturlformdiv.children().filter("form").children().filter(".urlinput").focus();
         });
         
-        $(".posturlexplanation").mouseover(function(event){
-          $(this).css("background-color","#ddd");
-        }).mouseout(function(event){
-          $(this).css("background-color","#fff");
-        });
-        
+        // onsubmit hide the posturl form
         $(".posturlform").submit(function (event){
-          var urlinput = $(event.target).children().filter(".urlinput")[0];
+          var url       = $(this).children().filter(".urlinput")[0].value;
+          var projectid = $(this).children().filter(".projectidinput")[0].value;
         
-          console.log( urlinput.value );
-          console.log( $(event.target).children().filter(".projectidinput")[0].value );
+          console.log( url );
+          console.log( projectid );
           
-          $(this).parent().css("height","0px").css("visibility", "hidden");
-          $(this).parent().siblings().filter(".posturl").css("visibility","visible").css("height","auto");
-          
-          urlinput.value="";
+          hide_url_submit( this );
           
           return false;
+        });
+        
+        // onclick the cancel button, hide the posturl form
+        $(".urlinputcancel").click(function event(){
+          hide_url_submit( $(this).parent() );
         });
         
       });
@@ -172,7 +184,8 @@
               <form class="posturlform">
                 <input class="urlinput" size="50" type="text" name="url"/>
                 <input class="projectidinput" type="hidden" name="projectid" value="{{project.key.id}}"/>
-                <input type="submit">
+                <input type="submit" value="submit">
+                <input class="urlinputcancel" type="button" value="cancel">
               </form>
             </div>
           </div>
