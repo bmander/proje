@@ -1,6 +1,37 @@
 <html>
   <head>
     <title>do.proje.cx - Do Projects!</title>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    
+    <script type="text/javascript">
+    
+      $(document).ready(function(){
+            
+        $(".posturl").click(function(event){
+          $(this).css("height","0px").css("visibility", "hidden");
+          $(this).siblings().filter(".posturlformdiv").css("visibility","visible").css("height","auto");
+        });
+        
+        $(".posturlexplanation").mouseover(function(event){
+          $(this).css("background-color","#ddd");
+        }).mouseout(function(event){
+          $(this).css("background-color","#fff");
+        });
+        
+        $(".posturlform").submit(function (event){
+          console.log( $(event.target).children().filter(".urlinput")[0].value );
+          console.log( $(event.target).children().filter(".projectidinput")[0].value );
+          
+          $(this).parent().css("height","0px").css("visibility", "hidden");
+          $(this).parent().siblings().filter(".posturl").css("visibility","visible").css("height","auto");
+          
+          return false;
+        });
+        
+      });
+    
+    </script>
+    
     <style type="text/css">
     
       #userstatus 
@@ -77,6 +108,22 @@
         padding-left:10px;
       }
       
+      .posturlexplanation {
+        font-size: 12px;
+        font-style: italic;
+        padding:2px;
+        color:#888;
+      }
+      
+      .posturlformdiv {
+        height:0px;
+        visibility:hidden;
+      }
+      
+      form {
+        margin-bottom:0px;
+      }
+      
     </style>
   </head>
   <body>
@@ -104,11 +151,25 @@
       </div>
 
       <div>
-        <ul>
-          {% for project in projects %}
-          <li><a href="/project/{{project.key.id}}/">{{ project.name }}</a></li>
-          {% endfor %}
-        </ul>
+        {% for project in projects %}
+        <div>
+          <div class="projectline">
+            <a href="/project/{{project.key.id}}/">{{ project.name }}</a>
+          </div>
+          <div class="projectposturl">
+            <div class="posturl">
+              <span class="posturlexplanation">post a url, a feed url, or a status message</span>
+            </div>
+            <div class="posturlformdiv">
+              <form class="posturlform">
+                <input class="urlinput" size="50" type="text" name="url"/>
+                <input class="projectidinput" type="hidden" name="projectid" value="{{project.key.id}}"/>
+                <input type="submit">
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </body>
