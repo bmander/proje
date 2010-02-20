@@ -9,7 +9,11 @@
             
         $(".posturl").click(function(event){
           $(this).css("height","0px").css("visibility", "hidden");
-          $(this).siblings().filter(".posturlformdiv").css("visibility","visible").css("height","auto");
+          
+          var posturlformdiv = $(this).siblings().filter(".posturlformdiv");
+          posturlformdiv.css("visibility","visible").css("height","auto");
+          
+          posturlformdiv.children().filter("form").children().filter(".urlinput").focus();
         });
         
         $(".posturlexplanation").mouseover(function(event){
@@ -19,11 +23,15 @@
         });
         
         $(".posturlform").submit(function (event){
-          console.log( $(event.target).children().filter(".urlinput")[0].value );
+          var urlinput = $(event.target).children().filter(".urlinput")[0];
+        
+          console.log( urlinput.value );
           console.log( $(event.target).children().filter(".projectidinput")[0].value );
           
           $(this).parent().css("height","0px").css("visibility", "hidden");
           $(this).parent().siblings().filter(".posturl").css("visibility","visible").css("height","auto");
+          
+          urlinput.value="";
           
           return false;
         });
