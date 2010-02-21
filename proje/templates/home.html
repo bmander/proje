@@ -30,15 +30,26 @@
           post_scrap_form_div.children().filter("form").children().filter(".scrap_input").focus();
         });
         
-        // onsubmit hide the posturl form
+        // onsubmit create scrap via ajax, append response to scraps list, and hide the form
         $(".post_scrap_form").submit(function (event){
-          var url       = $(this).children().filter(".scrap_input")[0].value;
+          // get data from form
+          var content   = $(this).children().filter(".scrap_input")[0].value;
           var projectid = $(this).children().filter(".project_id_input")[0].value;
-        
-          console.log( url );
+          
+          console.log( content );
           console.log( projectid );
           
-          hide_url_submit_form( this );
+          // persist in bigtable
+          $.post( "add_scrap/", {'content':content,'projectid':projectid}, function(data,textStatus,xhr){
+            console.log( textStatus );
+          });
+          
+          // add the scrap to the current page
+          var scrap_list_div = $(this).parent().parent().siblings().filter(".scrap_list");
+          scrap_list_div.prepend( $("<div>").html(content) );
+          
+          // hide the submit form
+          hide_url_submit_form($(this));
           
           return false;
         });
@@ -144,6 +155,26 @@
         margin-bottom:0px;
       }
       
+      .project_scraps {
+        margin-left:10px;
+      }
+      
+      .scrap_created {
+        margin-left:5px;
+        font-size:12px;
+        color:#888;
+      
+      }
+      
+      .scrap_remainder {
+        font-size:12px;
+        color:#888;
+      }
+      
+      .project_name {
+        font-weight:bold;
+      }
+      
     </style>
   </head>
   <body>
@@ -174,21 +205,32 @@
         {% for project in projects %}
         <div>
           <div class="project_summary">
-            <a href="/project/{{project.key.id}}/">{{ project.name }}</a>
+            <span class="project_name"><a href="/project/{{project.id}}/">{{ project.name }}</a></span>
           </div>
           <div class="project_scraps">
             <div class="post_scrap">
               <div class="post_scrap_explanation">
-                <span class="post_scrap_explanation_span">post a url, a feed url, or a status message</span>
+                <span class="post_scrap_explanation_span">click to post a url, a feed url, or a status message</span>
               </div>
               <div class="post_scrap_form_div">
                 <form class="post_scrap_form">
                   <input class="scrap_input" size="50" type="text" name="scrap"/>
-                  <input class="project_id_input" type="hidden" name="projectid" value="{{project.key.id}}"/>
+                  <input class="project_id_input" type="hidden" name="projectid" value="{{project.id}}"/>
                   <input type="submit" value="submit">
                   <input class="scrap_input_cancel" type="button" value="cancel">
                 </form>
               </div>
+            </div>
+            <div class="scrap_list">
+              {% for scrap in project.scraps %}
+              <div>
+                <span class="scrap_content">{{scrap.content}}<span>
+                <span class="scrap_created">{{scrap.created|timesince}} ago</span>
+              </div>
+              {% endfor %}
+              {% if project.remainder %}
+              <div class="scrap_remainder"><a href="/project/{{project.id}}/">({{project.remainder}} more)</a></div>
+              {% endif %}
             </div>
           </div>
         </div>

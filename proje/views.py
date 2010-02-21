@@ -1,10 +1,12 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, HttpResponseNotFound, HttpResponseForbidden
 from django.shortcuts import render_to_response
 from google.appengine.api import users
 import logging
 from django.utils import simplejson as json
 from google.appengine.ext.db import GeoPt
-from models import Project, Nickname
+from models import Project, Nickname, Scrap, LinkScrap
+import datetime
+import urlparse
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
@@ -35,7 +37,17 @@ def home(request, user):
     
     signout_url = users.create_logout_url("/welcome")
     
-    projects = Project.all().filter('user =', user)
+    project_entities = Project.all().filter('user =', user)
+    
+    projects = []
+    for project_entity in project_entities:
+        #logging.info( project_entity.scrap_set.order("-created") )
+        
+        scraps = project_entity.scrap_set.order("-created")
+        scraps_count = scraps.count()
+        scraps_remainder = scraps_count-5 if scraps_count>=5 else 0
+
+        projects.append( {'name':project_entity.name, 'scraps':scraps.fetch(5), 'id':project_entity.key().id(), 'remainder':scraps_remainder} )
     
     return render_to_response( "home.html", {'user':user,'signout_url':signout_url,'projects':projects} )
     
@@ -77,5 +89,39 @@ def user(request, nickname):
     
     # get projects from the user
     return render_to_response( "user.html", {'user':nickname.user,'projects':projects} )
+
+@membersonly
+def add_scrap(request, user):
+    
+    if not ('content' and 'projectid' in request.POST):
+        return HttpResponseServerError( "You must include both content and a project id" )
+    
+    logging.info( str( request.POST ) );
+    
+    # get project_id
+    projectid = int(request.POST['projectid'])
+    
+    # get project
+    project = Project.get_by_id( projectid )
+    
+    if project is None:
+        return HttpResponseNotFound( "Could not find project with id %s"%projectid )
+    
+    # project needs to be owned by the current user
+    if project.user != user:
+        return HttpResponseForbidden( "This project is owned by %s. You are %s. They're not the same."%(project.user, user) )
+    
+    # scrap content needs to be non-blank
+    scrap_content = request.POST['content']
+    if scrap_content.strip()=="":
+        return HttpResponseServerError( "The scrap content needs to have <i>characters</i>" )
+        
+    parsed_url = urlparse.urlparse( scrap_content )
+    if parsed_url[0]!="" and parsed_url[1]!="":
+        LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now() ).put()
+    else:
+        Scrap( content = scrap_content, project=project, created=datetime.datetime.now() ).put()
+    return HttpResponse( "OK" )
+    
     
     

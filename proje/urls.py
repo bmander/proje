@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^project/delete/(.*)/', 'delete_project', name='delete_project'),
     url(r'^project/(.*)/', 'project', name='project'),
     url(r'^user/(.*)/', 'user', name='user'),
+    url(r'^add_scrap/$', 'add_scrap', name='add_scrap'),
     # Example:
     # (r'^proje/', include('proje.foo.urls')),
 
