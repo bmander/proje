@@ -175,6 +175,10 @@
         font-weight:bold;
       }
       
+      .scrap_icon {
+        margin-right:2px;
+      }
+      
     </style>
   </head>
   <body>
@@ -224,7 +228,14 @@
             <div class="scrap_list">
               {% for scrap in project.scraps %}
               <div>
+                {% ifequal scrap.class_name "LinkScrap" %}
+                  {% if scrap.icon %}
+                    <img class="scrap_icon" src="/scrap_icon/{{scrap.key.id}}/"/>
+                  {% endif %}
+                  <a href="{{scrap.content}}">{{scrap.content}}</a>
+                {% else %}
                 <span class="scrap_content">{{scrap.content}}<span>
+                {% endifequal %}
                 <span class="scrap_created">{{scrap.created|timesince}} ago</span>
               </div>
               {% endfor %}

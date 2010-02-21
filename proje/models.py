@@ -15,5 +15,5 @@ class Scrap(polymodel.PolyModel):
     created = db.DateTimeProperty()
     
 class LinkScrap( Scrap ):
-    pass
+    icon    = db.BlobProperty()
     

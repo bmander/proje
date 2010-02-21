@@ -7,6 +7,7 @@ from google.appengine.ext.db import GeoPt
 from models import Project, Nickname, Scrap, LinkScrap
 import datetime
 import urlparse
+from google.appengine.api import urlfetch, images
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
@@ -118,10 +119,21 @@ def add_scrap(request, user):
         
     parsed_url = urlparse.urlparse( scrap_content )
     if parsed_url[0]!="" and parsed_url[1]!="":
-        LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now() ).put()
+        # get favicon, if possible
+        favicon_url = parsed_url[0]+"://"+parsed_url[1]+"/favicon.ico"
+        favicon_resp = urlfetch.fetch(favicon_url)
+        if favicon_resp.status_code == 200:
+            favicon = images.resize( favicon_resp.content, 16, 16 )
+        else:
+            favicon = None
+        
+        LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), icon=favicon ).put()
     else:
         Scrap( content = scrap_content, project=project, created=datetime.datetime.now() ).put()
     return HttpResponse( "OK" )
     
+def scrap_icon(request, scrap_id):
+    link_scrap = LinkScrap.get_by_id( int(scrap_id) )
     
+    return HttpResponse( link_scrap.icon, mimetype="image/x-icon" )
     
