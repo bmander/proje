@@ -123,7 +123,7 @@ def add_scrap(request, user):
         favicon_url = parsed_url[0]+"://"+parsed_url[1]+"/favicon.ico"
         favicon_resp = urlfetch.fetch(favicon_url)
         if favicon_resp.status_code == 200:
-            favicon = images.resize( favicon_resp.content, 16, 16 )
+            favicon = favicon_resp.content
         else:
             favicon = None
         

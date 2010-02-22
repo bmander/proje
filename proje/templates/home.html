@@ -229,18 +229,18 @@
               {% for scrap in project.scraps %}
               <div>
                 {% ifequal scrap.class_name "LinkScrap" %}
-                  {% if scrap.icon %}
-                    <img class="scrap_icon" src="/scrap_icon/{{scrap.key.id}}/"/>
-                  {% endif %}
+                  <img height=16 width=16 class="scrap_icon" src="{% if scrap.icon %}/scrap_icon/{{scrap.key.id}}/{% else %}/images/blankicon.ico{% endif %}"/>
                   <a href="{{scrap.content}}">{{scrap.content}}</a>
                 {% else %}
-                <span class="scrap_content">{{scrap.content}}<span>
+                  <span class="scrap_content">{{scrap.content}}<span>
                 {% endifequal %}
                 <span class="scrap_created">{{scrap.created|timesince}} ago</span>
               </div>
               {% endfor %}
               {% if project.remainder %}
-              <div class="scrap_remainder"><a href="/project/{{project.id}}/">({{project.remainder}} more)</a></div>
+              <div class="scrap_remainder">
+                <a href="/project/{{project.id}}/">({{project.remainder}} more)</a>
+              </div>
               {% endif %}
             </div>
           </div>
