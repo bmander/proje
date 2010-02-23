@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>do.proje.cx - Do Projects!</title>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    
+    {% block scripts %}{% endblock %}
+    
+    <style type="text/css">
+        
+      #header {
+        margin-bottom:5px;
+        padding:2px;
+        overflow:hidden;
+        background-color:#eeeeff;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-bottom-color:#bbbbff;
+        border-right-style:solid;
+        border-right-width:1px;
+        border-right-color:#bbbbff;
+      }
+      
+      #logout {
+        float:right;
+      }
+      
+      #content {
+        background-color:#ffffff;
+        width:950px;
+        display:block;
+        margin:auto;
+        padding:5px;
+        min-height:950px;
+      }
+        
+      a{
+        text-decoration:none;
+      }
+      
+      a:hover{
+        text-decoration:underline
+      }
+      
+      body {background-color:#eeeeee}
+      
+      h1{margin:0px;padding:5px;}
+      
+      form {
+        margin-bottom:0px;
+      }
+
+      
+    </style>
+    
+    {% block style %}{% endblock %}
+  </head>
+  <body>
+    <div id="content">
+      
+      <div id="header">
+        <h1 style="float:left">
+          do.proje.cx
+        </h1>
+        <div id="logout">
+          signed in as <a id="username" href="user/{{user.nickname}}/">{{user}}</a> :: <a href="{{signout_url}}">sign out</a>
+        </div>
+      </div>
+
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

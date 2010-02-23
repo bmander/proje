@@ -1,8 +1,6 @@
-<html>
-  <head>
-    <title>do.proje.cx - Do Projects!</title>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    
+{% extends "base.html" %}
+
+{% block scripts %}
     <script type="text/javascript">
     
       function hide_url_submit_form(urlsubmit_form_element) {
@@ -89,54 +87,11 @@
       });
     
     </script>
-    
+{% endblock %}
+
+{% block style %}
     <style type="text/css">
     
-      #userstatus 
-        {
-           margin-bottom:5px;
-           padding:2px;
-           overflow:hidden;
-           background-color:#ffeeee;
-           border-bottom-style:solid;
-           border-bottom-width:1px;
-           border-bottom-color:#ffbbbb;
-           border-right-style:solid;
-           border-right-width:1px;
-           border-right-color:#ffbbbb;
-        }
-        
-      #header {
-           margin-bottom:5px;
-           padding:2px;
-           overflow:hidden;
-           background-color:#eeeeff;
-           border-bottom-style:solid;
-           border-bottom-width:1px;
-           border-bottom-color:#bbbbff;
-           border-right-style:solid;
-           border-right-width:1px;
-           border-right-color:#bbbbff;
-      }
-        
-      #signedin {float:left}
-      #logout {
-        float:right;
-      }
-      #content 
-        {
-          background-color:#ffffff;
-          width:950px;
-          display:block;
-          margin:auto;
-          padding:5px;
-          min-height:950px;
-        }
-      a {text-decoration:none;}
-      a:hover {text-decoration:underline}
-      body {background-color:#eeeeee}
-      h1{margin:0px;padding:5px;}
-      
       #addprojectslink{
         background-color:#eeffee;
         text-size:large;
@@ -167,12 +122,7 @@
         padding-right:3px;
         background-color:#f6f6f6;
       }
-      
-      ul {
-        list-style-type:none;
-        padding-left:10px;
-      }
-      
+    
       .post_scrap_explanation_span {
         font-size: 12px;
         font-style: italic;
@@ -184,11 +134,7 @@
         height:0px;
         visibility:hidden;
       }
-      
-      form {
-        margin-bottom:0px;
-      }
-      
+    
       .project_scraps {
         margin-left:10px;
       }
@@ -199,7 +145,7 @@
         color:#888;
       
       }
-      
+    
       .scrap_remainder {
         font-size:12px;
         color:#888;
@@ -220,26 +166,15 @@
       .scraptype_Scrap .scrap_content{
         background-color: #eeffff;
       }
-      
+    
       #new_project_form {
         display:inline;
         visibility:hidden;
       }
-      
     </style>
-  </head>
-  <body>
-    <div id="content">
-      
-      <div id="header">
-        <h1 style="float:left">
-          do.proje.cx
-        </h1>
-        <div id="logout">
-          signed in as <a id="username" href="user/{{user.nickname}}/">{{user}}</a> :: <a href="{{signout_url}}">sign out</a>
-        </div>
-      </div>
+{% endblock %}
 
+{% block content %} 
       <div id="addproject">
         <span id="addprojectslink">list a new project</span>
         <form id="new_project_form">
@@ -254,6 +189,4 @@
            {% include "includes/project_div.html" %}
         {% endfor %}
       </div>
-    </div>
-  </body>
-</html>
+{% endblock %}
