@@ -42,24 +42,14 @@
           var content   = $(this).children().filter(".scrap_input")[0].value;
           var projectid = $(this).children().filter(".project_id_input")[0].value;
           
-          console.log( content );
-          console.log( projectid );
-          
           var scrap_list_div = $(this).parent().parent().siblings().filter(".scrap_list");
           
           // persist in bigtable
           $.post( "add_scrap/", {'content':content,'projectid':projectid}, function(data,textStatus,xhr){
-          
-            console.log( data );
-            console.log( textStatus );
             
             scrap_list_div.prepend( data );
             
           });
-          
-          // add the scrap to the current page
-          //var scrap_list_div = $(this).parent().parent().siblings().filter(".scrap_list");
-          //scrap_list_div.prepend( $("<div>").html(content) );
           
           // hide the submit form
           hide_url_submit_form($(this));
@@ -75,8 +65,7 @@
           // persist in bigtable
           $.post( "add_project/", {'name':project_name}, function(data,textStatus,xhr){
             $("#projects").append( data );
-          
-            console.log( textStatus );
+
           });
           
           // hide the submit form
@@ -84,6 +73,12 @@
           $(this).css("visibility", "hidden");
           
           return false;
+        });
+        
+        // onclick new project cancel, hide new project form
+        $("#project_input_cancel").click(function event(){
+          $("#project_name_input")[0].value = "";
+          $("#new_project_form").css("visibility", "hidden");
         });
         
         // onclick the cancel button, hide the posturl form
