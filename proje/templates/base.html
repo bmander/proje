@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>do.proje.cx - Do Projects!</title>
+    {% block title %}<title>do.proje.cx - Do Projects!</title>{% endblock %}
     <script type="text/javascript" src="/js/jquery.js"></script>
     
     {% block scripts %}{% endblock %}
@@ -59,7 +59,7 @@
       
       <div id="header">
         <h1 style="float:left">
-          do.proje.cx
+          <a href="/">do.proje.cx</a>
         </h1>
         <div id="logout">
           signed in as <a id="username" href="user/{{user.nickname}}/">{{user}}</a> :: <a href="{{signout_url}}">sign out</a>

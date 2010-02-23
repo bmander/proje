@@ -1,6 +1,6 @@
-<html>
-  <body>
-    <h1>{{project.name}}</h1>
-    <a href="/project/delete/{{project.key.id}}/">delete</a>
-  </body>
-</html>
+{% extends "base.html" %}
+
+{% block content %} 
+  <h1>{{project.name}}</h1>
+  <a href="/project/delete/{{project.key.id}}/">delete</a>
+{% endblock %}
