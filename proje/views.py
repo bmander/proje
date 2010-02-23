@@ -66,7 +66,7 @@ def add_project(request, user):
         project.put()
         
         # return redirect to main page
-        return HttpResponseRedirect( "/" )
+        return render_to_response( "includes/project_div.html", {'project':project} )
     
     return render_to_response( "add_project.html", {'error':request.GET.get('error',None)} )
     

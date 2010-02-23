@@ -33,6 +33,7 @@
         // onclick list new project, show form
         $("#addprojectslink").click(function(event){
           $("#new_project_form").css("visibility","visible");
+          $("#project_name_input")[0].focus()
         });
         
         // onsubmit create scrap via ajax, append response to scraps list, and hide the form
@@ -55,6 +56,34 @@
           
           // hide the submit form
           hide_url_submit_form($(this));
+          
+          return false;
+        });
+        
+        // onsubmit create scrap via ajax, append response to scraps list, and hide the form
+        $("#new_project_form").submit(function (event){
+          // get data from form
+          var project_name = $("#project_name_input")[0].value;
+          
+          // persist in bigtable
+          $.post( "add_project/", {'name':project_name}, function(data,textStatus,xhr){
+            $("#projects").append( data );
+          
+            console.log( data );
+            console.log( textStatus );
+          });
+          
+          // add the scrap to the current page
+          //var scrap_list_div = $(this).parent().parent().siblings().filter(".scrap_list");
+          //scrap_list_div.prepend( $("<div>").html(content) );
+          
+          
+          
+          // hide the submit form
+          //hide_url_submit_form($(this));*/
+          
+          $("#project_name_input")[0].value = "";
+          $(this).css("visibility", "hidden");
           
           return false;
         });
@@ -221,52 +250,15 @@
       <div id="addproject">
         <span id="addprojectslink">list a new project</span>
         <form id="new_project_form">
-          <input class="project_name_input" size="50" type="text" name="scrap"/>
+          <input id="project_name_input" size="50" type="text" name="project_name"/>
           <input type="submit" value="submit">
-          <input class="project_input_cancel" type="button" value="cancel">
+          <input id="project_input_cancel" type="button" value="cancel">
         </form>
       </div>
 
-      <div>
+      <div id="projects">
         {% for project in projects %}
-        <div>
-          <div class="project_summary">
-            <span class="project_name"><a href="/project/{{project.id}}/">{{ project.name }}</a></span>
-          </div>
-          <div class="project_scraps">
-            <div class="post_scrap">
-              <div class="post_scrap_explanation">
-                <span class="post_scrap_explanation_span">click to post a url, a feed url, or a status message</span>
-              </div>
-              <div class="post_scrap_form_div">
-                <form class="post_scrap_form">
-                  <input class="scrap_input" size="50" type="text" name="scrap"/>
-                  <input class="project_id_input" type="hidden" name="projectid" value="{{project.id}}"/>
-                  <input type="submit" value="submit">
-                  <input class="scrap_input_cancel" type="button" value="cancel">
-                </form>
-              </div>
-            </div>
-            <div class="scrap_list">
-              {% for scrap in project.scraps %}
-              <div class="scraptype_{{scrap.class_name}}">
-                {% ifequal scrap.class_name "LinkScrap" %}
-                  <img height=16 width=16 class="scrap_icon" src="{% if scrap.icon %}/scrap_icon/{{scrap.key.id}}/{% else %}/images/blankicon.ico{% endif %}"/>
-                  <span class="scrap_content"><a href="{{scrap.content}}">{{scrap.content}}</a></span>
-                {% else %}
-                  <span class="scrap_content">{{scrap.content}}</span>
-                {% endifequal %}
-                <span class="scrap_created">{{scrap.created|timesince}} ago</span>
-              </div>
-              {% endfor %}
-              {% if project.remainder %}
-              <div class="scrap_remainder">
-                <a href="/project/{{project.id}}/">({{project.remainder}} more)</a>
-              </div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+           {% include "includes/project_div.html" %}
         {% endfor %}
       </div>
     </div>
