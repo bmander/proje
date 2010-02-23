@@ -2,5 +2,5 @@
 
 {% block content %} 
   <h1>{{project.name}}</h1>
-  <a href="/project/delete/{{project.key.id}}/">delete</a>
+  {% ifequal user project.user %}<a href="/project/delete/{{project.key.id}}/">delete</a>{% endifequal %}
 {% endblock %}

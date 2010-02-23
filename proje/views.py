@@ -90,6 +90,13 @@ def add_project(request, user):
     
 @membersonly
 def delete_project( request, user, id ):
+    project = Project.get_by_id(int(id))
+    
+    if project.user != user:
+        return HttpResponseForbidden( "<html><body>That doesn't belong to you</body></html>" )
+    
+    project.delete()
+    
     return HttpResponseRedirect( "/" )
 
 @usercontext
