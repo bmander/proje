@@ -62,7 +62,11 @@
           <a href="/">do.proje.cx</a>
         </h1>
         <div id="logout">
-          signed in as <a id="username" href="user/{{user.nickname}}/">{{user}}</a> :: <a href="{{signout_url}}">sign out</a>
+          {% if user %}
+            signed in as <a id="username" href="/user/{{user.nickname}}/">{{user}}</a> :: <a href="{{logout_url}}">sign out</a>
+          {% else %}
+            <a href="{{login_url}}">sign in</a>
+          {% endif %}
         </div>
       </div>
 

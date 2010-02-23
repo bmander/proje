@@ -19,6 +19,22 @@ def membersonly(f):
             return HttpResponseRedirect( "/welcome" )
     
     return new_f
+    
+def usercontext(f):
+    def new_f(request, *args, **kwargs):
+        
+        user = users.get_current_user()
+        
+        if user:
+            logout_url = users.create_logout_url("/welcome")
+            login_url = None
+        else:
+            login_url = users.create_login_url("/")
+            logout_url = None 
+            
+        return f(request, {'user':user, 'login_url':login_url, 'logout_url':logout_url}, *args, **kwargs)
+        
+    return new_f
 
 def welcome(request):
     user = users.get_current_user()
@@ -65,8 +81,10 @@ def add_project(request, user):
         project = Project(user=user,name=name)
         project.put()
         
-        # return redirect to main page
-        return render_to_response( "includes/project_div.html", {'project':project} )
+        logging.info( project.key().id() )
+        
+        # return rendered project div
+        return render_to_response( "includes/project_div.html", {'project':{'name':project.name,'id':project.key().id()}} )
     
     return render_to_response( "add_project.html", {'error':request.GET.get('error',None)} )
     
@@ -74,12 +92,16 @@ def add_project(request, user):
 def delete_project( request, user, id ):
     return HttpResponseRedirect( "/" )
 
-def project(request, id):
+@usercontext
+def project(request, context, id):
     project = Project.get_by_id(int(id))
     
-    return render_to_response( "project.html", {'project':project} )
+    context['project']=project
     
-def user(request, nickname):
+    return render_to_response( "project.html", context )
+    
+@usercontext
+def user(request, context, nickname):
     # get a user from the nickname
     nickname = Nickname.all().filter("nickname =", nickname).get()
     
@@ -88,8 +110,10 @@ def user(request, nickname):
         
     projects = Project.all().filter("user =", nickname.user)
     
+    context.update( {'subject_user':nickname.user,'projects':projects} )
+    
     # get projects from the user
-    return render_to_response( "user.html", {'user':nickname.user,'projects':projects} )
+    return render_to_response( "user.html", context )
 
 @membersonly
 def add_scrap(request, user):

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 
-{% block title %}<title>{{user.nickname}} at do.proje.cx</title>{% endblock %}
+{% block title %}<title>{{subject_user.nickname}} at do.proje.cx</title>{% endblock %}
 
 {% block content %}
-    <h1>{{user.nickname}}</h1>
+    <h1>{{subject_user.nickname}}</h1>
     <ul>
       {% for project in projects %}
         <li><a href="/project/{{project.key.id}}/">{{ project.name }}</a></li>
