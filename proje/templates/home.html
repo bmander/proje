@@ -30,6 +30,11 @@
           post_scrap_form_div.children().filter("form").children().filter(".scrap_input").focus();
         });
         
+        // onclick list new project, show form
+        $("#addprojectslink").click(function(event){
+          $("#new_project_form").css("visibility","visible");
+        });
+        
         // onsubmit create scrap via ajax, append response to scraps list, and hide the form
         $(".post_scrap_form").submit(function (event){
           // get data from form
@@ -124,6 +129,7 @@
       
       #addprojectslink:hover{
         background-color:#aaffaa;
+        cursor:pointer;
       }
       
       #addproject{
@@ -193,6 +199,11 @@
         background-color: #eeffff;
       }
       
+      #new_project_form {
+        display:inline;
+        visibility:hidden;
+      }
+      
     </style>
   </head>
   <body>
@@ -208,14 +219,12 @@
       </div>
 
       <div id="addproject">
-        <a id="addprojectslink" href="add_project/">list a new project</a>
-              <div class="new_project_form_div">
-                <form class="new_project_form">
-                  <input class="project_name_input" size="50" type="text" name="scrap"/>
-                  <input type="submit" value="submit">
-                  <input class="project_input_cancel" type="button" value="cancel">
-                </form>
-              </div>
+        <span id="addprojectslink">list a new project</span>
+        <form id="new_project_form">
+          <input class="project_name_input" size="50" type="text" name="scrap"/>
+          <input type="submit" value="submit">
+          <input class="project_input_cancel" type="button" value="cancel">
+        </form>
       </div>
 
       <div>
