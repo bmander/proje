@@ -127,10 +127,13 @@ def add_scrap(request, user):
         else:
             favicon = None
         
-        LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), icon=favicon ).put()
+        scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), icon=favicon )
     else:
-        Scrap( content = scrap_content, project=project, created=datetime.datetime.now() ).put()
-    return HttpResponse( "OK" )
+        scrap = Scrap( content = scrap_content, project=project, created=datetime.datetime.now() )
+        
+    scrap.put()
+        
+    return render_to_response( "includes/scrap_div.html", {'scrap':scrap} )
     
 def scrap_icon(request, scrap_id):
     link_scrap = LinkScrap.get_by_id( int(scrap_id) )

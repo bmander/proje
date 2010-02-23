@@ -1,0 +1,9 @@
+<div class="scraptype_{{scrap.class_name}}">
+  {% ifequal scrap.class_name "LinkScrap" %}
+    <img height=16 width=16 class="scrap_icon" src="{% if scrap.icon %}/scrap_icon/{{scrap.key.id}}/{% else %}/images/blankicon.ico{% endif %}"/>
+    <span class="scrap_content"><a href="{{scrap.content}}">{{scrap.content}}</a></span>
+  {% else %}
+    <span class="scrap_content">{{scrap.content}}</span>
+  {% endifequal %}
+  <span class="scrap_created">{{scrap.created|timesince}} ago</span>
+</div>
