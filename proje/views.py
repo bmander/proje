@@ -9,6 +9,7 @@ import datetime
 import urlparse
 from google.appengine.api import urlfetch, images
 from google.appengine.api.urlfetch import DownloadError
+from utils import get_projects_with_scraplists
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
@@ -53,20 +54,8 @@ def home(request, context, user):
     # if we haven't already created a Nickname for this google account's current nickname, create one
     if Nickname.all().filter("nickname =", user.nickname()).count() == 0:
         Nickname(user=user, nickname=user.nickname()).put()
-    
-    signout_url = users.create_logout_url("/welcome")
-    
-    project_entities = Project.all().filter('user =', user).order("-updated")
-    
-    projects = []
-    for project_entity in project_entities:
-        #logging.info( project_entity.scrap_set.order("-created") )
         
-        scraps = project_entity.scrap_set.order("-created")
-        scraps_count = scraps.count()
-        scraps_remainder = scraps_count-5 if scraps_count>=5 else 0
-
-        projects.append( {'name':project_entity.name, 'scraps':scraps.fetch(5), 'id':project_entity.key().id(), 'remainder':scraps_remainder} )
+    projects = get_projects_with_scraplists( user )
     
     context['user'] = user
     context['projects'] = projects
