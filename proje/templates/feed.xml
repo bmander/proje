@@ -1,6 +1,6 @@
 <rss version="2.0"> 
    <channel> 
-      <title>Project News Feed for {{user.nickname}}</title> 
+      <title>{{user.nickname}}'s Projects</title> 
       <link>http://do.proje.cx/user/{{user.nickname}}/</link> 
       <description>Status updates and project links for {{user.nickname}}'s projects.</description> 
       <language>en-us</language> 
