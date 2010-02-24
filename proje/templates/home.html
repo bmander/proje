@@ -8,34 +8,17 @@
         $(urlsubmit_form_element).parent().css("height","0px").css("visibility", "hidden");
         $(urlsubmit_form_element).parent().siblings().filter(".post_scrap_explanation").css("visibility","visible").css("height","auto");
       }
-    
-      $(document).ready(function(){
-            
-        // onmouseover make the post_scrap_explanation div light up
-        $(".post_scrap_explanation_span").mouseover(function(event){
-          $(this).css("background-color","#ddd");
-        }).mouseout(function(event){
-          $(this).css("background-color","#fff");
-        });
-            
-        // onclick show the posturl form
-        $(".post_scrap_explanation").click(function(event){
-          $(this).css("height","0px").css("visibility", "hidden");
-          
-          var post_scrap_form_div = $(this).siblings().filter(".post_scrap_form_div");
-          post_scrap_form_div.css("visibility","visible").css("height","auto");
-          
-          post_scrap_form_div.children().filter("form").children().filter(".scrap_input").focus();
-        });
+      
+      function show_posturl_form(event) {
+        $(this).css("height","0px").css("visibility", "hidden");
         
-        // onclick list new project, show form
-        $("#addprojectslink").click(function(event){
-          $("#new_project_form").css("visibility","visible");
-          $("#project_name_input")[0].focus()
-        });
-        
-        // onsubmit create scrap via ajax, append response to scraps list, and hide the form
-        $(".post_scrap_form").submit(function (event){
+        var post_scrap_form_div = $(this).siblings().filter(".post_scrap_form_div");
+        post_scrap_form_div.css("visibility","visible").css("height","auto");
+          
+        post_scrap_form_div.children().filter("form").children().filter(".scrap_input").focus();
+      }
+      
+       function ajax_post_scrap(event){
           // get data from form
           var content   = $(this).children().filter(".scrap_input")[0].value;
           var projectid = $(this).children().filter(".project_id_input")[0].value;
@@ -53,16 +36,28 @@
           hide_url_submit_form($(this));
           
           return false;
-        });
+        }
         
-        // onsubmit create scrap via ajax, append response to scraps list, and hide the form
-        $("#new_project_form").submit(function (event){
+      function cancel_post_scrap(){
+        hide_url_submit_form( $(this).parent() );
+      }
+      
+      function post_new_project (event){
           // get data from form
           var project_name = $("#project_name_input")[0].value;
           
           // persist in bigtable
           $.post( "add_project/", {'name':project_name}, function(data,textStatus,xhr){
-            $("#projects").append( data );
+          
+            var new_project = $( data );
+            var post_scrap = new_project.children(".project_scraps").children(".post_scrap");
+            var post_scrap_form = post_scrap.children(".post_scrap_form_div").children(".post_scrap_form")
+            
+            post_scrap_form.submit( ajax_post_scrap );//.submit(post_scrap);
+            post_scrap_form.children(".scrap_input_cancel").click( cancel_post_scrap );
+            post_scrap.children(".post_scrap_explanation").click( show_posturl_form );
+                      
+            $("#projects").append( new_project );
 
           });
           
@@ -71,7 +66,24 @@
           $(this).css("visibility", "hidden");
           
           return false;
+        }
+    
+      $(document).ready(function(){
+            
+        // onclick show the posturl form
+        $(".post_scrap_explanation").click( show_posturl_form );
+        
+        // onclick list new project, show form
+        $("#addprojectslink").click(function(event){
+          $("#new_project_form").css("visibility","visible");
+          $("#project_name_input")[0].focus()
         });
+        
+        // onsubmit create scrap via ajax, append response to scraps list, and hide the form
+        $(".post_scrap_form").submit(ajax_post_scrap);
+        
+        // onsubmit create scrap via ajax, append response to scraps list, and hide the form
+        $("#new_project_form").submit(post_new_project);
         
         // onclick new project cancel, hide new project form
         $("#project_input_cancel").click(function event(){
@@ -80,9 +92,7 @@
         });
         
         // onclick the cancel button, hide the posturl form
-        $(".scrap_input_cancel").click(function event(){
-          hide_url_submit_form( $(this).parent() );
-        });
+        $(".scrap_input_cancel").click( cancel_post_scrap );
         
       });
     
@@ -170,6 +180,14 @@
       #new_project_form {
         display:inline;
         visibility:hidden;
+      }
+      
+      .post_scrap_explanation_span {
+        background-color: #fff;
+      }
+      
+      .post_scrap_explanation_span:hover {
+        background-color: #eee;
       }
     </style>
 {% endblock %}
