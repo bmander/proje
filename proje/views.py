@@ -47,7 +47,8 @@ def welcome(request):
     return render_to_response( "welcome.html", {'enter_url':enter_url} )
     
 @membersonly
-def home(request, user):
+@usercontext
+def home(request, context, user):
     # if we haven't already created a Nickname for this google account's current nickname, create one
     if Nickname.all().filter("nickname =", user.nickname()).count() == 0:
         Nickname(user=user, nickname=user.nickname()).put()
@@ -66,7 +67,9 @@ def home(request, user):
 
         projects.append( {'name':project_entity.name, 'scraps':scraps.fetch(5), 'id':project_entity.key().id(), 'remainder':scraps_remainder} )
     
-    return render_to_response( "home.html", {'user':user,'signout_url':signout_url,'projects':projects} )
+    context['user'] = user
+    context['projects'] = projects
+    return render_to_response( "home.html", context )
     
 @membersonly
 def add_project(request, user):
