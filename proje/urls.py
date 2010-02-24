@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^project/delete/(.*)/', 'delete_project', name='delete_project'),
     url(r'^project/(.*)/', 'project', name='project'),
     url(r'^user/(.*)/', 'user', name='user'),
+    url(r'^feed/(.*)/', 'feed', name='feed'),
     url(r'^add_scrap/$', 'add_scrap', name='add_scrap'),
     url(r'^scrap_icon/(.*)/', 'scrap_icon', name='scrap_icon'),
     # Example:

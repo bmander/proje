@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block headextra %}
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/feed/{{subject_user.nickname}}/">
+{% endblock %}
+
 {% block style %}
 <style type="text/css">
   .scrap_list {
@@ -8,6 +12,12 @@
   .project_name {
     font-weight:bold;
   }
+  #feedtext {
+    margin-left:2px;
+  }
+  #melink {
+    margin-bottom:2px;
+  }
 </style>
 {% endblock %}
 
@@ -15,6 +25,8 @@
 
 {% block content %}
     <h1>{{subject_user.nickname}}</h1>
+    <div id="melink"><a rel="me" href="http://www.google.com/profiles/{{subject_user.nickname}}/">http://www.google.com/profiles/{{subject_user.nickname}}/</a></div>
+    <div id="feedlink"><a rel="alternate" href="/feed/{{subject_user.nickname}}/"><img src="/images/feed-icon.png"/><span id="feedtext">feed</span></a></div>
     <div id="projects">
       {% for project in projects %}
       <div class="project">

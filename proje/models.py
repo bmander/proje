@@ -14,6 +14,7 @@ class Scrap(polymodel.PolyModel):
     content = db.StringProperty()
     project = db.ReferenceProperty(Project)
     created = db.DateTimeProperty()
+    creator = db.UserProperty()
     
 class LinkScrap( Scrap ):
     icon    = db.BlobProperty()

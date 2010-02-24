@@ -1,0 +1,18 @@
+<rss version="2.0"> 
+   <channel> 
+      <title>Project News Feed for {{user.nickname}}</title> 
+      <link>http://do.proje.cx/user/{{user.nickname}}/</link> 
+      <description>Status updates and project links for {{user.nickname}}'s projects.</description> 
+      <language>en-us</language> 
+      <pubDate>{% now "r" %}</pubDate> 
+      <lastBuildDate>{% now "r" %}</lastBuildDate> 
+      <webMaster>brandon.m.anderson@gmail.com</webMaster>{% for scrap in scraps %}
+      <item>
+        <title>Update on {{scrap.project.name}}</title>
+        <link>http://do.proje.cx/project/{{scrap.project.key.id}}/</link>
+        <description>{{scrap.content}}</description>
+        <pubDate>{{scrap.created|date:"r"}}</pubDate>
+        <guid>http://do.proje.cx/scrap/{{scrap.key.id}}/</guid>
+      </item>{% endfor %}
+   </channel> 
+</rss>

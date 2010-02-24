@@ -155,9 +155,9 @@ def add_scrap(request, user):
         except DownloadError:
             favicon = None
 
-        scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), icon=favicon )
+        scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), creator=user, icon=favicon )
     else:
-        scrap = Scrap( content = scrap_content, project=project, created=datetime.datetime.now() )
+        scrap = Scrap( content = scrap_content, project=project, creator=user, created=datetime.datetime.now() )
     
     project.updated = datetime.datetime.now()
     project.put()
@@ -169,4 +169,14 @@ def scrap_icon(request, scrap_id):
     link_scrap = LinkScrap.get_by_id( int(scrap_id) )
     
     return HttpResponse( link_scrap.icon, mimetype="image/x-icon" )
+    
+def feed(request, nickname):
+    nickname = Nickname.all().filter("nickname =", nickname).get()
+    
+    if nickname is None:
+        return HttpResponseNotFound( "No such user" )
+        
+    scraps = Scrap.all().filter("creator =", nickname.user).order("-created").fetch(50)
+    
+    return render_to_response( "feed.xml", {'user':nickname.user, 'scraps':scraps}, mimetype="application/rss+xml" )
     

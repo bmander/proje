@@ -18,6 +18,18 @@ indexes:
 
 - kind: Scrap
   properties:
+  - name: creator
+  - name: created
+    direction: desc
+
+- kind: Scrap
+  properties:
   - name: project
+  - name: created
+    direction: desc
+
+- kind: Scrap
+  properties:
+  - name: user
   - name: created
     direction: desc
