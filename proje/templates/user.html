@@ -1,13 +1,32 @@
 {% extends "base.html" %}
 
+{% block style %}
+<style type="text/css">
+  .scraps {
+    margin-left:10px;
+  }
+  .project_name {
+    font-weight:bold;
+  }
+</style>
+{% endblock %}
 
 {% block title %}<title>{{subject_user.nickname}} at do.proje.cx</title>{% endblock %}
 
 {% block content %}
     <h1>{{subject_user.nickname}}</h1>
-    <ul>
+    <div id="projects">
       {% for project in projects %}
-        <li><a href="/project/{{project.key.id}}/">{{ project.name }}</a></li>
+      <div class="project">
+        <div class="project_summary">
+          <span class="project_name"><a href="/project/{{project.key.id}}/">{{ project.name }}</a></span>
+        </div>
+        <div class="scraps">
+        {% for scrap in project.scrap_set %}
+          {% include "includes/scrap_div.html" %}
+        {% endfor %}
+        </div>
+      <div>
       {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
