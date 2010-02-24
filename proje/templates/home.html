@@ -51,13 +51,13 @@
           
             var new_project = $( data );
             var post_scrap = new_project.children(".project_scraps").children(".post_scrap");
-            var post_scrap_form = post_scrap.children(".post_scrap_form_div").children(".post_scrap_form")
+            var post_scrap_form = post_scrap.children(".post_scrap_form_div").children(".post_scrap_form");
             
             post_scrap_form.submit( ajax_post_scrap );//.submit(post_scrap);
             post_scrap_form.children(".scrap_input_cancel").click( cancel_post_scrap );
             post_scrap.children(".post_scrap_explanation").click( show_posturl_form );
                       
-            $("#projects").append( new_project );
+            $("#projects").prepend( new_project );
 
           });
           

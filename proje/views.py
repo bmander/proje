@@ -56,7 +56,7 @@ def home(request, context, user):
     
     signout_url = users.create_logout_url("/welcome")
     
-    project_entities = Project.all().filter('user =', user)
+    project_entities = Project.all().filter('user =', user).order("-updated")
     
     projects = []
     for project_entity in project_entities:
@@ -82,7 +82,7 @@ def add_project(request, user):
         name = request.POST['name'].strip()
         if name == "":
             return HttpResponseRedirect( "?error=the+name+needs+to+contain+letters" )
-        project = Project(user=user,name=name)
+        project = Project(user=user,name=name,updated=datetime.datetime.now())
         project.put()
         
         logging.info( project.key().id() )
@@ -169,7 +169,9 @@ def add_scrap(request, user):
         scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), icon=favicon )
     else:
         scrap = Scrap( content = scrap_content, project=project, created=datetime.datetime.now() )
-        
+    
+    project.updated = datetime.datetime.now()
+    project.put()
     scrap.put()
         
     return render_to_response( "includes/scrap_div.html", {'scrap':scrap} )

@@ -2,8 +2,9 @@ from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 
 class Project(db.Model):
-    user = db.UserProperty()
-    name = db.StringProperty()
+    user    = db.UserProperty()
+    name    = db.StringProperty()
+    updated = db.DateTimeProperty()
     
 class Nickname(db.Model):
     nickname = db.StringProperty()
