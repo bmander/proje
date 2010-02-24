@@ -16,15 +16,6 @@
         </form>
       </div>
     </div>
-    <div class="scrap_list">
-      {% for scrap in project.scraps %}
-        {% include "includes/scrap_div.html" %}
-      {% endfor %}
-      {% if project.remainder %}
-      <div class="scrap_remainder">
-        <a href="/project/{{project.id}}/">({{project.remainder}} more)</a>
-      </div>
-      {% endif %}
-    </div>
+    {% include "includes/scraplist_div.html" %}
   </div>
 </div>

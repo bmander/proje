@@ -108,7 +108,7 @@ def user(request, context, nickname):
     if nickname is None:
         return HttpResponseNotFound( "No such user" )
         
-    projects = Project.all().filter("user =", nickname.user)
+    projects = get_projects_with_scraplists( nickname.user )
     
     context.update( {'subject_user':nickname.user,'projects':projects} )
     

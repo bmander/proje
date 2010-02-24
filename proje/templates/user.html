@@ -2,7 +2,7 @@
 
 {% block style %}
 <style type="text/css">
-  .scraps {
+  .scrap_list {
     margin-left:10px;
   }
   .project_name {
@@ -19,13 +19,9 @@
       {% for project in projects %}
       <div class="project">
         <div class="project_summary">
-          <span class="project_name"><a href="/project/{{project.key.id}}/">{{ project.name }}</a></span>
+          <span class="project_name"><a href="/project/{{project.id}}/">{{ project.name }}</a></span>
         </div>
-        <div class="scraps">
-        {% for scrap in project.scrap_set %}
-          {% include "includes/scrap_div.html" %}
-        {% endfor %}
-        </div>
+        {% include "includes/scraplist_div.html" %}
       <div>
       {% endfor %}
     </div>
