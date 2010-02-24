@@ -8,6 +8,7 @@ from models import Project, Nickname, Scrap, LinkScrap
 import datetime
 import urlparse
 from google.appengine.api import urlfetch, images
+from google.appengine.api.urlfetch import DownloadError
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
@@ -155,12 +156,16 @@ def add_scrap(request, user):
     if parsed_url[0]!="" and parsed_url[1]!="":
         # get favicon, if possible
         favicon_url = parsed_url[0]+"://"+parsed_url[1]+"/favicon.ico"
-        favicon_resp = urlfetch.fetch(favicon_url)
-        if favicon_resp.status_code == 200:
-            favicon = favicon_resp.content
-        else:
+        try:
+            favicon_resp = urlfetch.fetch(favicon_url)
+            
+            if favicon_resp.status_code == 200:
+                favicon = favicon_resp.content
+            else:
+                favicon = None
+        except DownloadError:
             favicon = None
-        
+
         scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), icon=favicon )
     else:
         scrap = Scrap( content = scrap_content, project=project, created=datetime.datetime.now() )
