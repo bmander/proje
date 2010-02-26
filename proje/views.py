@@ -95,8 +95,10 @@ def delete_project( request, user, id ):
 @usercontext
 def project(request, context, id):
     project = Project.get_by_id(int(id))
-    
     context['project']=project
+    
+    scraps = Scrap.all().filter("project =", project).order("-created")
+    context['scraps'] = scraps
     
     return render_to_response( "project.html", context )
     

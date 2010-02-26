@@ -13,7 +13,7 @@
   <div id="project_controls">
     {% ifequal user project.user %}<a href="/project/delete/{{project.key.id}}/">delete</a>{% endifequal %}
   </div>
-  {% for scrap in project.scrap_set %}
+  {% for scrap in scraps %}
     {% include "includes/scrap_div.html" %}
   {% endfor %}
 {% endblock %}
