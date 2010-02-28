@@ -4,12 +4,13 @@ from google.appengine.api import users
 import logging
 from django.utils import simplejson as json
 from google.appengine.ext.db import GeoPt
-from models import Project, Nickname, Scrap, LinkScrap
+from models import Project, Nickname, Scrap, LinkScrap, FeedScrap
 import datetime
 import urlparse
 from google.appengine.api import urlfetch, images
 from google.appengine.api.urlfetch import DownloadError
 from utils import get_projects_with_scraplists
+import feedparser
 
 def membersonly(f):
     def new_f(request, *args, **kwargs):
@@ -142,7 +143,8 @@ def add_scrap(request, user):
     scrap_content = request.POST['content']
     if scrap_content.strip()=="":
         return HttpResponseServerError( "The scrap content needs to have <i>characters</i>" )
-        
+    
+    # if it's a URL, file it away as a LinkScrap
     parsed_url = urlparse.urlparse( scrap_content )
     if parsed_url[0]!="" and parsed_url[1]!="":
         # get favicon, if possible
@@ -156,8 +158,13 @@ def add_scrap(request, user):
                 favicon = None
         except DownloadError:
             favicon = None
-
-        scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), creator=user, icon=favicon )
+            
+        # if it parses as a feed, file it away as a feed scrap
+        parse_attempt = feedparser.parse(scrap_content)
+        if parse_attempt.version != "":
+            scrap = FeedScrap( content = scrap_content, project=project, created=datetime.datetime.now(), creator=user, icon=favicon )
+        else:
+            scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), creator=user, icon=favicon )
     else:
         scrap = Scrap( content = scrap_content, project=project, creator=user, created=datetime.datetime.now() )
     

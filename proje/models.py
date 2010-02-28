@@ -19,3 +19,6 @@ class Scrap(polymodel.PolyModel):
 class LinkScrap( Scrap ):
     icon    = db.BlobProperty()
     
+class FeedScrap( LinkScrap ):
+    pass
+    
