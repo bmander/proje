@@ -9,6 +9,7 @@
   {% ifequal scrap.class_name "FeedScrap"  %}
     <img height=16 width=16 class="scrap_icon" src="/images/feed-icon.png"/>
     <span class="scrap_content">{{scrap.content}}</span>
+    {% ifequal user project.user %}<a href="/update_feed_scrap/{{scrap.key.id}}/">update</a>{% endifequal %}
   {% endifequal %}
   {% ifequal scrap.class_name "FeedItemScrap"  %}
     <img height=16 width=16 class="scrap_icon" src="/images/feed-icon.png"/>

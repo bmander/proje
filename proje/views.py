@@ -215,3 +215,34 @@ def feed(request, nickname):
     
     return render_to_response( "feed.xml", {'user':nickname.user, 'scraps':scraps}, mimetype="application/rss+xml" )
     
+@membersonly
+def update_feed_scrap( request, user, scrap_id ):
+    feed_scrap = FeedScrap.get_by_id( int(scrap_id) )
+    project = feed_scrap.project
+    
+    if project.user != user:
+        return HttpResponseForbidden( "<html><body>That doesn't belong to you</body></html>" ) 
+    
+    logging.info( feed_scrap )
+    
+    parse_attempt = feedparser.parse(feed_scrap.content)
+    for entry in parse_attempt.entries:
+        if 'guid' in entry and 'link' in entry and ('updated' in entry or 'published' in entry):
+            if 'published' in entry:
+                created = datetime.datetime( *entry.published_parsed[:6] )
+            elif 'updated' in entry:
+                created = datetime.datetime( *entry.updated_parsed[:6] )
+                
+            if FeedItemScrap.all().filter("project =", project).filter("guid =", entry.guid).count()==0:
+                feed_item_scrap = FeedItemScrap( content=entry.link,
+                                                 project=project,
+                                                 created=created,
+                                                 creator=user,
+                                                 icon=None,
+                                                 feed=feed_scrap,
+                                                 guid=entry.guid )
+                feed_item_scrap.put()
+                logging.info( feed_item_scrap )
+    
+    return HttpResponseRedirect( "/" )
+    
