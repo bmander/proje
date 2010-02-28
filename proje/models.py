@@ -22,3 +22,6 @@ class LinkScrap( Scrap ):
 class FeedScrap( LinkScrap ):
     pass
     
+class FeedItemScrap( LinkScrap ):
+    feed = db.ReferenceProperty(FeedScrap)
+    guid = db.StringProperty()

@@ -10,5 +10,9 @@
     <img height=16 width=16 class="scrap_icon" src="/images/feed-icon.png"/>
     <span class="scrap_content">{{scrap.content}}</span>
   {% endifequal %}
+  {% ifequal scrap.class_name "FeedItemScrap"  %}
+    <img height=16 width=16 class="scrap_icon" src="/images/feed-icon.png"/>
+    <span class="scrap_content"><a href="{{scrap.content}}">{{scrap.content}}</a></span>
+  {% endifequal %}
   <span class="scrap_created">{{scrap.created|timesince}} ago</span>
 </div>

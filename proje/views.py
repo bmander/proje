@@ -4,7 +4,7 @@ from google.appengine.api import users
 import logging
 from django.utils import simplejson as json
 from google.appengine.ext.db import GeoPt
-from models import Project, Nickname, Scrap, LinkScrap, FeedScrap
+from models import Project, Nickname, Scrap, LinkScrap, FeedScrap, FeedItemScrap
 import datetime
 import urlparse
 from google.appengine.api import urlfetch, images
@@ -162,15 +162,41 @@ def add_scrap(request, user):
         # if it parses as a feed, file it away as a feed scrap
         parse_attempt = feedparser.parse(scrap_content)
         if parse_attempt.version != "":
+            # if we're not already subscribed to this feed
+            if FeedScrap.all().filter("content =", scrap_content).filter("project =", project).count()!=0:
+                return HttpResponseServerError( "This feed has already been added to this project.Z" )
+            
             scrap = FeedScrap( content = scrap_content, project=project, created=datetime.datetime.now(), creator=user, icon=favicon )
+            scrap.put()
+            
+            for entry in parse_attempt.entries:
+                if 'guid' in entry and 'link' in entry and ('updated' in entry or 'published' in entry):
+                    if 'published' in entry:
+                        created = datetime.datetime( *entry.published_parsed[:6] )
+                    elif 'updated' in entry:
+                        created = datetime.datetime( *entry.updated_parsed[:6] )
+                        
+                        
+                    if FeedItemScrap.all().filter("project=", project).filter("guid =", entry.guid).count()==0:
+                        feed_item_scrap = FeedItemScrap( content=entry.link,
+                                                         project=project,
+                                                         created=created,
+                                                         creator=user,
+                                                         icon=favicon,
+                                                         feed=scrap,
+                                                         guid=entry.guid )
+                        feed_item_scrap.put()
+                        logging.info( feed_item_scrap )
+                                                     
         else:
             scrap = LinkScrap( content = scrap_content, project=project, created=datetime.datetime.now(), creator=user, icon=favicon )
+            scrap.put()
     else:
         scrap = Scrap( content = scrap_content, project=project, creator=user, created=datetime.datetime.now() )
+        scrap.put()
     
     project.updated = datetime.datetime.now()
     project.put()
-    scrap.put()
         
     return render_to_response( "includes/scrap_div.html", {'scrap':scrap} )
     
