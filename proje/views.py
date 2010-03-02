@@ -46,8 +46,11 @@ def welcome(request):
         enter_url="/"
     else:
         enter_url=users.create_login_url("/")
+        
+    user_count = Nickname.all().count()
+    project_count = Project.all().count()
     
-    return render_to_response( "welcome.html", {'enter_url':enter_url} )
+    return render_to_response( "welcome.html", {'enter_url':enter_url, 'user_count':user_count, 'project_count':project_count} )
     
 @usercontext
 def learn(request, context):
