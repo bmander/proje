@@ -8,6 +8,7 @@ from django.conf.urls.defaults import url
 urlpatterns = patterns(
     'proje.views',
     url(r'^welcome$', 'welcome', name='welcome'),
+    url(r'^learn$', 'learn', name='learn'),
     url(r'^$', 'home', name='home'),
     url(r'^add_project/$', 'add_project', name='add_project'),
     url(r'^project/delete/(.*)/', 'delete_project', name='delete_project'),

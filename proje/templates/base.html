@@ -74,6 +74,7 @@
   <body>
     <div id="content">
       
+      {% block header %}
       <div id="header">
         <h1 style="float:left">
           <a href="/">do.proje.cx</a>
@@ -86,6 +87,7 @@
           {% endif %}
         </div>
       </div>
+      {% endblock %}
 
       {% block content %}{% endblock %}
     </div>

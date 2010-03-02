@@ -49,6 +49,9 @@ def welcome(request):
     
     return render_to_response( "welcome.html", {'enter_url':enter_url} )
     
+def learn(request):
+    return render_to_response( "learn.html", {} )
+    
 @membersonly
 @usercontext
 def home(request, context, user):
