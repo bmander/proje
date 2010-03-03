@@ -260,4 +260,11 @@ def users_list( request, context ):
     context['all_users'] = all_users
     
     return render_to_response( "users.html", context )
+
+@usercontext
+def projects_list( request, context ):
+    all_projects = Project.all().order("-updated")
+    context['all_projects'] = all_projects
+    
+    return render_to_response( "projects.html", context )
     

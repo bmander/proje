@@ -19,6 +19,7 @@ urlpatterns = patterns(
     url(r'^scrap_icon/(.*)/', 'scrap_icon', name='scrap_icon'),
     url(r'^update_feed_scrap/(.*)/', 'update_feed_scrap', name='update_feed_scrap'),
     url(r'^users/', 'users_list', name='users_list'),
+    url(r'^projects/', 'projects_list', name='projects_list'),
     # Example:
     # (r'^proje/', include('proje.foo.urls')),
 

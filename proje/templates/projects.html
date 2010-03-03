@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>All projects</h1>
+<ul>
+{% for project in all_projects %}
+<li><a href="/project/{{project.key.id}}/">{{project.name}}</a> updated by <a href="/user/{{project.user.nickname}}/">{{project.user.nickname}}</a> {{project.updated|timesince}} ago</li>
+{% endfor %}
+</ul>
+{% endblock %}
