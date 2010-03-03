@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Everybody</h1>
+<ul>
+{% for user in all_users %}
+<li><a href="/user/{{user.nickname}}/">{{user.nickname}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

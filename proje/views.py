@@ -253,4 +253,11 @@ def update_feed_scrap( request, user, scrap_id ):
                 logging.info( feed_item_scrap )
     
     return HttpResponseRedirect( "/" )
+
+@usercontext
+def users_list( request, context ):
+    all_users = Nickname.all()
+    context['all_users'] = all_users
+    
+    return render_to_response( "users.html", context )
     
