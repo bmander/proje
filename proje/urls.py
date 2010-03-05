@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^users/', 'users_list', name='users_list'),
     url(r'^projects/', 'projects_list', name='projects_list'),
     url(r'^update_project_counts/', 'update_project_counts', name='update_project_counts'),
+    url(r'^set_project_updated/', 'set_project_updated', name='set_project_updated'),
     # Example:
     # (r'^proje/', include('proje.foo.urls')),
 
