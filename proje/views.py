@@ -279,7 +279,7 @@ def update_feed_scrap( request, user, scrap_id ):
 
 @usercontext
 def users_list( request, context ):
-    all_users = Nickname.all()
+    all_users = Nickname.all().order("-project_count")
     context['all_users'] = all_users
     
     return render_to_response( "users.html", context )

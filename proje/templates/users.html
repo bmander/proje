@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 
+{% block style %}
+<style type="text/css">
+.projectcount {
+  background-color:#ffdddd;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <h1>Everybody</h1>
 <ul>
 {% for user in all_users %}
-<li><a href="/user/{{user.nickname}}/">{{user.nickname}}</a></li>
+<li><a href="/user/{{user.nickname}}/">{{user.nickname}}</a> <span class="projectcount">{{user.project_count}} projects</span></li>
 {% endfor %}
 </ul>
 {% endblock %}
