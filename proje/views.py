@@ -305,11 +305,12 @@ def update_project_counts( request, user ):
 @adminsonly
 def set_project_updated( request, user ):
     n = 0
-    for project in Project.all().filter("update =", None):
-        project.updated = datetime.datetime.now()
-        project.put()
-        
-        n += 1
+    for project in Project.all():
+        if project.updated is None:
+            project.updated = datetime.datetime.now()
+            project.put()
+            
+            n += 1
         
     return HttpResponse( "Set the Project.updated on %d records"%n )
     
