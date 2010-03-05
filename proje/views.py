@@ -23,6 +23,17 @@ def membersonly(f):
     
     return new_f
     
+def adminsonly(f):
+    def new_f(request, *args, **kwargs):
+        
+        if users.is_current_user_admin():
+            user = users.get_current_user()
+            return f(request, user, *args, **kwargs)
+        else:
+            return HttpResponseRedirect( "/welcome" )
+    
+    return new_f
+    
 def usercontext(f):
     def new_f(request, *args, **kwargs):
         
@@ -80,8 +91,15 @@ def add_project(request, user):
         name = request.POST['name'].strip()
         if name == "":
             return HttpResponseRedirect( "?error=the+name+needs+to+contain+letters" )
+            
+        # make and put project
         project = Project(user=user,name=name,updated=datetime.datetime.now())
         project.put()
+        
+        # increment project_count
+        nickname = Nickname.all().filter("user =", user).get()
+        nickname.project_count += 1
+        nickname.put()
         
         logging.info( project.key().id() )
         
@@ -96,6 +114,11 @@ def delete_project( request, user, id ):
     
     if project.user != user:
         return HttpResponseForbidden( "<html><body>That doesn't belong to you</body></html>" )
+        
+    # get nickname of user, to decrement their project_count
+    nickname = Nickname.all().filter("user =", user).get()
+    nickname.project_count -= 1
+    nickname.put()
     
     project.delete()
     
@@ -267,4 +290,15 @@ def projects_list( request, context ):
     context['all_projects'] = all_projects
     
     return render_to_response( "projects.html", context )
+    
+@adminsonly
+def update_project_counts( request, user ):
+    n = 0
+    for nickname in Nickname.all():
+        nickname.project_count = Project.all().filter("user =", nickname.user).count()
+        nickname.put()
+        
+        n += 1
+    
+    return HttpResponse( "Projects counted for %d nicknames"%n )
     

@@ -7,8 +7,9 @@ class Project(db.Model):
     updated = db.DateTimeProperty()
     
 class Nickname(db.Model):
-    nickname = db.StringProperty()
-    user = db.UserProperty()
+    nickname      = db.StringProperty()
+    user          = db.UserProperty()
+    project_count = db.IntegerProperty(default=0)
     
 class Scrap(polymodel.PolyModel):
     content = db.StringProperty()
